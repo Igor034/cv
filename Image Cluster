@@ -1,0 +1,39 @@
+import os
+import shutil
+import time
+
+print('Check: ', os.getcwd())
+print(os.listdir())
+
+# before coping/moving images 
+for dirpath, dirnames, filenames in os.walk('C:/Users/Source folder'):
+    print('Current path:', dirpath)
+    print('Directories:', dirnames)
+    print('Files:', filenames)
+    print(len(filenames))
+    print()
+
+list_of_new_folders =[]
+for picture in filenames:
+    file = os.path.splitext(picture)[0]                   # separates file from extension
+    date_of_file = file.split('_')
+    year_month = date_of_file[1][:6]                      # filter year and month from the date (20181123)
+    if year_month not in list_of_new_folders:
+        list_of_new_folders.append(year_month)
+        os.chdir('C:/Users/Igor/Desktop/New folder/Slike za vezbu')
+        try:
+            os.mkdir(f"{year_month}")
+            shutil.copy(picture, year_month)              # option: shutil.move(----); to move pictures to created folders
+        except FileExistsError:
+            pass
+    shutil.copy(picture, year_month)
+    time.sleep(0.3)                                       # this is an option if you want to watch moving process
+
+# after coping/moving images 
+print('Total number of new folders: ', len(list_of_new_folders))
+print('New folders: ',list_of_new_folders)
+for dirpath, dirnames, filenames in os.walk('C:/Users/Igor/Desktop/New folder/Slike za vezbu'):
+    print('Current path:', dirpath)
+    print('Directories:', dirnames)
+    print('Files: ', filenames)
+    print()
